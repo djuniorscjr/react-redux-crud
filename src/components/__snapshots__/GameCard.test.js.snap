@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GameCard component should render as expected 1`] = `
+<div
+  className="ui card"
+>
+  <div
+    className="image"
+  >
+    <img
+      alt="Game Over"
+      src=""
+    />
+  </div>
+  <div
+    className="content"
+  >
+    <div
+      className="header"
+    />
+  </div>
+  <div
+    className="extra content"
+  >
+    <div
+      className="ui two buttons"
+    >
+      <Link
+        className="ui basic button green"
+        replace={false}
+        to="/game/0"
+      >
+        Edit
+      </Link>
+      <div
+        className="ui basic button red"
+        onClick={[Function]}
+      >
+        Delete
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GamesList component should render as expected 1`] = `
+<div>
+  <div
+    className="ui four cards"
+  >
+    <GameCard
+      deleteGame={[Function]}
+      game={
+        Object {
+          "_id": 0,
+          "cover": "",
+          "title": "",
+        }
+      }
+    />
+  </div>
+</div>
+`;

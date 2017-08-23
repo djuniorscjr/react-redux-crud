@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GameForm component should render as expected 1`] = `
+<div>
+  <form
+    className="ui form"
+    onSubmit={[Function]}
+  >
+    <h2>
+      Add new game
+    </h2>
+    <div
+      className="field"
+    >
+      <label
+        htmlFor="title"
+      >
+        Title
+      </label>
+      <input
+        id="title"
+        name="title"
+        onChange={[Function]}
+        value=""
+      />
+      <span />
+    </div>
+    <div
+      className="field"
+    >
+      <label
+        htmlFor="cover"
+      >
+        Cover URL
+      </label>
+      <input
+        id="cover"
+        name="cover"
+        onChange={[Function]}
+        value=""
+      />
+      <span />
+    </div>
+    <div
+      className="field"
+    />
+    <div
+      className="field"
+    >
+      <button
+        className="ui primary button"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+`;
