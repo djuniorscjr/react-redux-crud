@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, } from 'react-native';
-
+import { connect } from 'react-redux';
 
 class Add extends React.Component {
 	render() {
@@ -12,4 +12,4 @@ class Add extends React.Component {
 	}
 };
 
-export default Add;
+export default connect(null, {})(Add);

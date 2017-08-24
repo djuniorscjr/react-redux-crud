@@ -1,14 +1,113 @@
 import React from 'react';
-import { View, Text, } from 'react-native';
+import { 
+	View, 
+	Text, 
+	FlatList,
+	Image,
+	ActivityIndicator,
+	TouchableOpacity,
+} from 'react-native';
+import { connect } from 'react-redux';
+import { list, setItem, remove, edit } from '../../actions/game';
+import ActionSheet from 'react-native-actionsheet';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-class List extends React.Component {
+const CANCEL_INDEX = 0
+const DESTRUCTIVE_INDEX = 2
+const options = [ 'Cancel', 'Edit', 'Delete'];
+const title = 'Choose option';
+
+class List extends React.PureComponent {
+	
+	componentDidMount() {
+		this.props.list();
+	}
+
+	showActionSheet = (_id) => {
+		this.props.setItem(_id);
+    this.ActionSheet.show();
+  };
+
+	handlePressActionSheet = (i) => {
+		if (i === 1) {
+			this.props.edit(this.props._id);
+		} else if(i === 2) {
+			this.props.remove(this.props._id);
+		}
+	}
+
+	renderFooter = () => {
+  	if (!this.props.loading) return null;
+
+    return (
+      <View
+        style={{
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE"
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
+  };
+
+	renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "86%",
+          backgroundColor: "#CED0CE",
+          marginLeft: "14%"
+        }}
+      />
+    );
+  };
+
+	renderItem = ({ item }) => (
+		<View style={{ flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 5, height: 70, }}>
+			<View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
+				<Text>Aew</Text>
+			</View>
+			<View style={{ width: '65%', justifyContent: 'center', alignItems: 'flex-start', paddingLeft: 10,}}>
+				<Text>{item.title}</Text>
+			</View>
+			<View style={{ width: '15%', justifyContent: 'center', alignItems: 'center'}}>
+				<TouchableOpacity onPress={() => { this.showActionSheet(item._id)}}>
+					<Icon name="ios-settings-outline" size={30}  />
+				</TouchableOpacity>
+			</View>
+		</View>
+	);
+
 	render() {
 		return (
 			<View>
-				<Text>List</Text>
+				<FlatList
+					data={this.props.data}
+					renderItem={this.renderItem}
+		 			keyExtractor={item => item._id}
+		 			ItemSeparatorComponent={this.renderSeparator}
+		 			ListFooterComponent={this.renderFooter}
+				/>
+				<ActionSheet
+          ref={o => this.ActionSheet = o}
+          title={title}
+          options={options}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePressActionSheet}
+        />
 			</View>
 		);
 	}
 };
 
-export default List;
+const mapStateToProps = state => ({
+	data: state.game.list,
+	loading: state.game.loading,
+	_id: state.game._id,
+});
+
+export default connect(mapStateToProps, { list, setItem, remove, edit })(List);
