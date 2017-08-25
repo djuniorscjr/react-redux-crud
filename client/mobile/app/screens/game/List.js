@@ -1,5 +1,6 @@
 import React from 'react';
 import { 
+	StyleSheet,
 	View, 
 	Text, 
 	FlatList,
@@ -30,6 +31,7 @@ class List extends React.PureComponent {
 
 	handlePressActionSheet = (i) => {
 		if (i === 1) {
+			this.props.navigation.navigate('Add');
 			this.props.edit(this.props._id);
 		} else if(i === 2) {
 			this.props.remove(this.props._id);
@@ -40,13 +42,7 @@ class List extends React.PureComponent {
   	if (!this.props.loading) return null;
 
     return (
-      <View
-        style={{
-          paddingVertical: 20,
-          borderTopWidth: 1,
-          borderColor: "#CED0CE"
-        }}
-      >
+      <View style={styles.footer}>
         <ActivityIndicator animating size="large" />
       </View>
     );
@@ -54,26 +50,19 @@ class List extends React.PureComponent {
 
 	renderSeparator = () => {
     return (
-      <View
-        style={{
-          height: 1,
-          width: "86%",
-          backgroundColor: "#CED0CE",
-          marginLeft: "14%"
-        }}
-      />
+      <View style={styles.separator} />
     );
   };
 
 	renderItem = ({ item }) => (
-		<View style={{ flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 5, height: 70, }}>
-			<View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
-				<Text>Aew</Text>
+		<View style={styles.item}>
+			<View style={styles.panel}>
+				<Image source={{uri: item.cover}} style={styles.image}/>
 			</View>
-			<View style={{ width: '65%', justifyContent: 'center', alignItems: 'flex-start', paddingLeft: 10,}}>
+			<View style={styles.title}>
 				<Text>{item.title}</Text>
 			</View>
-			<View style={{ width: '15%', justifyContent: 'center', alignItems: 'center'}}>
+			<View style={styles.btn}>
 				<TouchableOpacity onPress={() => { this.showActionSheet(item._id)}}>
 					<Icon name="ios-settings-outline" size={30}  />
 				</TouchableOpacity>
@@ -103,6 +92,47 @@ class List extends React.PureComponent {
 		);
 	}
 };
+
+const styles = StyleSheet.create({
+	item: { 
+		flexDirection: 'row', 
+		paddingVertical: 5, 
+		paddingHorizontal: 5, 
+		height: 70, 
+	}, 
+	panel: { 
+		width: '20%', 
+		justifyContent: 'center', 
+		alignItems: 'center', 
+	},
+	image: { 
+		borderRadius: 100, 
+		height: 50, 
+		width: 50, 
+	}, 
+	title: { 
+		width: '65%', 
+		justifyContent: 'center', 
+		alignItems: 'flex-start', 
+		paddingLeft: 10,
+	},
+	btn: { 
+		width: '15%', 
+		justifyContent: 'center', 
+		alignItems: 'center'
+	},
+	separator: {
+		height: 1,
+		width: "86%",
+		backgroundColor: "#CED0CE",
+		marginLeft: "14%"
+	},
+	footer: {
+		paddingVertical: 20,
+		borderTopWidth: 1,
+		borderColor: "#CED0CE"
+	}
+});
 
 const mapStateToProps = state => ({
 	data: state.game.list,

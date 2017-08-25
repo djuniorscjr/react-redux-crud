@@ -4,6 +4,8 @@ import {
 	SET_ITEM,
 	REMOVE_GAME,
 	EDIT_GAME,
+	ADD_GAME,
+	SET_IMAGE,
 } from '../actions/game';
 
 const initialState = {
@@ -41,7 +43,12 @@ export default (state = initialState, action) => {
 				...state,
 				game: state.list.filter((elem, i, array) => {
 					return elem._id === action._id
-				}),
+				})[0],
+			}
+		case SET_IMAGE:
+			return {
+				...state,
+				image: action.image,
 			}
 		default:
 			return state;

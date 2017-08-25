@@ -1,6 +1,18 @@
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import List from '../screens/game/List';
 import Add from '../screens/game/Add';
+import Cover from '../screens/game/Cover';
+
+const Register = StackNavigator({
+	Add: {
+		screen: Add,
+	},
+	Cover: {
+		screen: Cover,
+	},
+}, {
+	headerMode: 'none',
+});
 
 const Tab = TabNavigator({
 	List: {
@@ -10,7 +22,7 @@ const Tab = TabNavigator({
 		}
 	},
 	Add: {
-		screen: Add,
+		screen: Register,
 		navigationOptions: {
 			tabBarLabel: 'Add',
 		}

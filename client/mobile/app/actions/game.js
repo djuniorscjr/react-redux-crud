@@ -4,29 +4,23 @@ export const ADD_GAME = 'ADD_GAME';
 export const EDIT_GAME = 'EDIT_GAME';
 export const REMOVE_GAME = 'REMOVE_GAME';
 export const SET_ITEM = 'SET_ITEM';
-
-const data = {
-	"_id": "5996ebe0bcac71255cefcb88",
-	"title": "Yeah!123",
-	"cover": "https://cdn.pixabay.com/photo/2015/11/15/21/31/lego-1044891_960_720.jpg"
-};
-const data2 = {
-	"_id": "599e0bcac71255cefcb88",
-	"title": "Yeah!1s23",
-	"cover": "https://cdn.pixabay.com/photo/2015/11/15/21/31/lego-1044891_960_720.jpg"
-};
-const example = [];
-example.push(data);
-example.push(data2);
+export const SET_IMAGE = 'SET_IMAGE';
+//localhost = genymotion 10.0.3.2 adv 10.0.2.2
+const URL = 'http://10.0.2.2:8080';
 
 export const list = () => {
 	return dispatch => {
 		dispatch({ type: LOADING });
-		setTimeout(() => {
-			dispatch({ type: LIST_GAME, data: example});
-		}, 5000);
-	};
+		fetch(`${URL}/api/games`)
+			.then(res => res.json())
+			.then(data => dispatch(setGames(data.games)));
+	}
 };
+
+const setGames = (games) => ({
+	type: LIST_GAME,
+	data: games,	
+});
 
 export const setItem = (_id) => ({
 	type: SET_ITEM,
@@ -43,5 +37,12 @@ export const edit = (_id) => ({
 	_id,
 });
 
+export const save = (game) => ({
+	type: ADD_GAME,
+	game,
+});
 
-
+export const sendImage = (imgbase64) => ({
+	type: SET_IMAGE,
+	image: imgbase64,
+});
