@@ -1,14 +1,18 @@
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import List from '../screens/game/List';
 import Add from '../screens/game/Add';
-import Cover from '../screens/game/Cover';
+import CaptureCover from '../screens/game/CaptureCover';
 
 const Register = StackNavigator({
 	Add: {
 		screen: Add,
 	},
-	Cover: {
-		screen: Cover,
+	CaptureCover: {
+		screen: CaptureCover,
+		navigationOptions: {
+			header: null,
+			tabBarVisible: false,
+		},
 	},
 }, {
 	headerMode: 'none',

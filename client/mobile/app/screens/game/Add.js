@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { 
 	StyleSheet,
 	View, 
@@ -9,45 +10,31 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { save } from '../../actions/game';
+import { save, newGame, setTitle } from '../../actions/game';
 
 class Add extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			title: '',
-			cover: '',
-			_id: '',
-		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.game) {
-			const { title, cover, _id } = nextProps.game;
-			this.setState({ 
-				title, cover, _id
-			});
-		}
-	}
+	static propTypes = {
+		save: PropTypes.func,
+		navigation: PropTypes.object,
+		loading: PropTypes.bool,
+		image: PropTypes.string,
+		newGame: PropTypes.func,
+		setTitle: PropTypes.func,
+		title: PropTypes.string,
+		cover: PropTypes.string,
+		_id: PropTypes.string,
+	};
 
 	save = () => {
-		const { title, cover } = this.state;
-		this.props.save({ title, cover})	
-	}
-
-	new = () => {
-		this.setState({
-			title: '',
-			cover: '',
-			_id: '',
-		});
+		const { _id, title, cover } = this.props;
+		this.props.save({ _id, title, cover });
 	}
 
 	renderImage() {
-		if (this.state.cover === '') {
+		if (this.props.cover === '') {
 			return (
-				<TouchableOpacity onPress={() => this.props.navigation.navigate('Cover')}>
+				<TouchableOpacity onPress={() => this.props.navigation.navigate('CaptureCover')}>
 					<Image 
 						source={require('../../image/empty.png')} 
 						style={styles.image}
@@ -55,19 +42,22 @@ class Add extends React.Component {
 				</TouchableOpacity>
 			);
 		}
+		const url = this.props.cover.indexOf('data:image') > 0 ? this.props.cover : 'data:image/png;base64,' + this.props.cover;
 		return (
-			<Image 
-				source={{uri: this.state.cover}} 
-				style={styles.image}
-			/>
+			<TouchableOpacity onPress={() => this.props.navigation.navigate('CaptureCover')}>
+				<Image 
+					source={{ uri: url }} 
+					style={styles.image}
+				/>
+			</TouchableOpacity>
 		);
 	}
 
 	renderBtnNew() {
-		if (this.state._id !== '') {
+		if (this.props._id !== '') {
 			return (
 				<TouchableOpacity 
-					onPress={()=> { this.new()}}
+					onPress={()=> { this.props.newGame()}}
 					style={styles.btnInverse}
 				>
 					<Text style={styles.btnTxtInverse}>New</Text>
@@ -79,15 +69,15 @@ class Add extends React.Component {
 	}
 
 	styleBtnDisabled() {
-		return this.state.title === '' ||
-			this.state.cover === '' ?
+		return this.props.title === '' ||
+			this.props.cover === '' ?
 			{ backgroundColor: '#DDD' }:
 			{};
 	}
 
 	txtBtnDisabled() {
-		return this.state.title === '' ||
-			this.state.cover === '' ?
+		return this.props.title === '' ||
+			this.props.cover === '' ?
 			{ color: 'rgba(12, 11, 11, 0.27)'} :
 			{};
 	}
@@ -105,15 +95,15 @@ class Add extends React.Component {
 					underlineColorAndroid="transparent"
 					placeholderTextColor="#1ba853"
 					style={styles.input}
-					onChangeText={(title) => this.setState({title})}
-					value={this.state.title}
+					onChangeText={(title) => this.props.setTitle(title)}
+					value={this.props.title}
 				/>
 				<View style={styles.panel}>
 					{ this.renderImage() }					
 				</View>
 				<TouchableOpacity 
 					onPress={()=> { this.save()}}
-					disabled={this.state.title == '' || this.state.cover == ''}
+					disabled={this.props.title === '' || this.props.cover === '' }
 					style={[styles.btn, this.styleBtnDisabled()]}
 				>
 					<Text style={[styles.btnTxt, this.txtBtnDisabled()]}>Save</Text>
@@ -122,7 +112,7 @@ class Add extends React.Component {
 			</View>
 		);
 	}
-};
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -173,7 +163,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
 	loading: state.game.loading,
-	game: state.game.game
+	_id: state.game._id,
+	title: state.game.title,
+	cover: state.game.cover,
 });
 
-export default connect(mapStateToProps, {})(Add);
+export default connect(mapStateToProps, { save, newGame, setTitle })(Add);

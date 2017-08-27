@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { 
 	StyleSheet,
 	View, 
@@ -20,6 +21,17 @@ const title = 'Choose option';
 
 class List extends React.PureComponent {
 	
+	static propTypes = {
+		list: PropTypes.func,
+		setItem: PropTypes.func,
+		navigation: PropTypes.object,
+		edit: PropTypes.func,
+		remove: PropTypes.func,
+		_id: PropTypes.string,
+		loading: PropTypes.bool,
+		data: PropTypes.array,
+	};
+
 	componentDidMount() {
 		this.props.list();
 	}
@@ -39,7 +51,7 @@ class List extends React.PureComponent {
 	}
 
 	renderFooter = () => {
-  	if (!this.props.loading) return null;
+		if (!this.props.loading) return null;
 
     return (
       <View style={styles.footer}>
@@ -76,9 +88,9 @@ class List extends React.PureComponent {
 				<FlatList
 					data={this.props.data}
 					renderItem={this.renderItem}
-		 			keyExtractor={item => item._id}
-		 			ItemSeparatorComponent={this.renderSeparator}
-		 			ListFooterComponent={this.renderFooter}
+					keyExtractor={item => item._id}
+					ItemSeparatorComponent={this.renderSeparator}
+					ListFooterComponent={this.renderFooter}
 				/>
 				<ActionSheet
           ref={o => this.ActionSheet = o}
@@ -91,7 +103,7 @@ class List extends React.PureComponent {
 			</View>
 		);
 	}
-};
+}
 
 const styles = StyleSheet.create({
 	item: { 
